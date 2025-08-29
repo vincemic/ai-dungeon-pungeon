@@ -1,0 +1,188 @@
+<div class="map-generator">
+  <div class="generator-panel">
+    <h2>Dungeon Map Generator</h2>
+    
+    <div class="settings-grid">
+      <div class="setting-group">
+        <label>Map Size</label>
+        <div class="size-inputs">
+          <input 
+            type="number" 
+            [ngModel]="settings().width" 
+            (ngModelChange)="updateSetting('width', $event)"
+            min="10" 
+            max="100" 
+            placeholder="Width">
+          <span>×</span>
+          <input 
+            type="number" 
+            [ngModel]="settings().height" 
+            (ngModelChange)="updateSetting('height', $event)"
+            min="10" 
+            max="100" 
+            placeholder="Height">
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <label for="theme">Theme</label>
+        <select 
+          id="theme"
+          [ngModel]="settings().theme" 
+          (ngModelChange)="updateSetting('theme', $event)">
+          @for (theme of mapThemes; track theme) {
+            <option [value]="theme">{{ theme | titlecase }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="setting-group">
+        <label for="difficulty">Difficulty</label>
+        <select 
+          id="difficulty"
+          [ngModel]="settings().difficulty" 
+          (ngModelChange)="updateSetting('difficulty', $event)">
+          @for (level of difficultyLevels; track level) {
+            <option [value]="level">{{ level | titlecase }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="setting-group">
+        <label for="roomDensity">Room Density</label>
+        <input 
+          id="roomDensity"
+          type="range" 
+          min="0" 
+          max="1" 
+          step="0.1"
+          [ngModel]="settings().roomDensity" 
+          (ngModelChange)="updateSetting('roomDensity', +$event)">
+        <span class="range-value">{{ (settings().roomDensity * 100) | number:'1.0-0' }}%</span>
+      </div>
+
+      <div class="setting-group">
+        <label for="treasureDensity">Treasure Density</label>
+        <input 
+          id="treasureDensity"
+          type="range" 
+          min="0" 
+          max="1" 
+          step="0.1"
+          [ngModel]="settings().treasureDensity" 
+          (ngModelChange)="updateSetting('treasureDensity', +$event)">
+        <span class="range-value">{{ (settings().treasureDensity * 100) | number:'1.0-0' }}%</span>
+      </div>
+
+      <div class="setting-group">
+        <label for="trapDensity">Trap Density</label>
+        <input 
+          id="trapDensity"
+          type="range" 
+          min="0" 
+          max="1" 
+          step="0.1"
+          [ngModel]="settings().trapDensity" 
+          (ngModelChange)="updateSetting('trapDensity', +$event)">
+        <span class="range-value">{{ (settings().trapDensity * 100) | number:'1.0-0' }}%</span>
+      </div>
+
+      <div class="setting-group">
+        <label for="seed">Seed (Optional)</label>
+        <div class="seed-input">
+          <input 
+            id="seed"
+            type="text" 
+            [ngModel]="settings().seed || ''" 
+            (ngModelChange)="updateSetting('seed', $event || undefined)"
+            placeholder="Random seed">
+          <button type="button" (click)="randomizeSeed()" class="btn-secondary">Random</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button 
+        type="button" 
+        (click)="generateMap()" 
+        [disabled]="isGenerating()"
+        class="btn-primary">
+        @if (isGenerating()) {
+          Generating...
+        } @else {
+          Generate Map
+        }
+      </button>
+
+      @if (generatedMap()) {
+        <button 
+          type="button" 
+          (click)="saveMap()" 
+          class="btn-success">
+          Save Map
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="map-preview">
+    @if (generatedMap()) {
+      <div class="map-info">
+        <h3>{{ generatedMap()!.name }}</h3>
+        <p>{{ generatedMap()!.width }} × {{ generatedMap()!.height }}</p>
+        <p>Theme: {{ generatedMap()!.metadata.theme | titlecase }}</p>
+        <p>Difficulty: {{ generatedMap()!.metadata.difficulty | titlecase }}</p>
+        <p>Est. Play Time: {{ generatedMap()!.metadata.estimatedPlayTime }} minutes</p>
+      </div>
+      
+      <div class="map-grid">
+        @for (row of generatedMap()!.tiles; track $index; let y = $index) {
+          <div class="map-row">
+            @for (tile of row; track tile.id; let x = $index) {
+              <div 
+                class="tile"
+                [class]="'tile-' + tile.type"
+                [title]="tile.type + ' (' + tile.x + ', ' + tile.y + ')'">
+              </div>
+            }
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="empty-preview">
+        <p>Generate a map to see the preview</p>
+      </div>
+    }
+  </div>
+
+  @if (savedMaps().length > 0) {
+    <div class="saved-maps">
+      <h3>Saved Maps</h3>
+      <div class="maps-list">
+        @for (map of savedMaps(); track map.id) {
+          <div class="map-item">
+            <div class="map-details">
+              <h4>{{ map.name }}</h4>
+              <p>{{ map.width }} × {{ map.height }} - {{ map.metadata.theme | titlecase }}</p>
+              <small>Created: {{ map.createdAt | date:'short' }}</small>
+            </div>
+            <div class="map-actions">
+              <button 
+                type="button" 
+                (click)="loadMap(map.id)"
+                class="btn-secondary">
+                Load
+              </button>
+              <button 
+                type="button" 
+                (click)="deleteMap(map.id)"
+                class="btn-danger">
+                Delete
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

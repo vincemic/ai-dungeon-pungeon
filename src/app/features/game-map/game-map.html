@@ -1,0 +1,170 @@
+<div class="game-map-container">
+  <div class="game-map-header">
+    <h2>Game Map</h2>
+    
+    <div class="map-controls">
+      <div class="map-selector">
+        <label for="mapSelect">Select Map:</label>
+        <select 
+          id="mapSelect" 
+          [value]="selectedMapId()" 
+          (change)="loadMap($any($event.target).value)"
+          class="form-control">
+          <option value="">Choose a map...</option>
+          @for (map of savedMaps(); track map.id) {
+            <option [value]="map.id">{{ map.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="view-controls">
+        <button 
+          (click)="adjustZoom(-0.2)" 
+          class="btn btn-secondary"
+          title="Zoom Out">
+          🔍-
+        </button>
+        <span class="zoom-display">{{ (zoomLevel() * 100).toFixed(0) }}%</span>
+        <button 
+          (click)="adjustZoom(0.2)" 
+          class="btn btn-secondary"
+          title="Zoom In">
+          🔍+
+        </button>
+        <button 
+          (click)="resetZoom()" 
+          class="btn btn-secondary"
+          title="Reset Zoom">
+          🎯
+        </button>
+        
+        <div class="toggle-controls">
+          <button 
+            (click)="toggleGrid()" 
+            [class.active]="showGrid()"
+            class="btn btn-toggle"
+            title="Toggle Grid">
+            📏
+          </button>
+          <button 
+            (click)="togglePlayerNames()" 
+            [class.active]="showPlayerNames()"
+            class="btn btn-toggle"
+            title="Toggle Player Names">
+            👤
+          </button>
+        </div>
+      </div>
+
+      <div class="action-controls">
+        <button 
+          (click)="exportMap()" 
+          [disabled]="!currentMap()"
+          class="btn btn-primary"
+          title="Export Map">
+          💾 Export
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-map-content">
+    @if (currentMap(); as map) {
+      <div class="map-info">
+        <h3>{{ map.name }}</h3>
+        <p class="map-description">{{ map.metadata.description }}</p>
+        <div class="map-stats">
+          <span class="stat">Size: {{ map.width }}×{{ map.height }}</span>
+          <span class="stat">Theme: {{ map.metadata.theme }}</span>
+          <span class="stat">Difficulty: {{ map.metadata.difficulty }}</span>
+        </div>
+      </div>
+
+      <div class="players-panel">
+        <h4>Players</h4>
+        <div class="player-list">
+          @for (player of currentPlayers(); track player.id) {
+            <div 
+              class="player-item"
+              [class.selected]="selectedPlayerId() === player.id"
+              (click)="selectPlayer(player.id)">
+              <div class="player-avatar">{{ player.character.class.charAt(0).toUpperCase() }}</div>
+              <div class="player-info">
+                <div class="player-name">{{ player.name }}</div>
+                <div class="player-position">{{ player.position.x }}, {{ player.position.y }}</div>
+                <div class="player-health">
+                  <div class="health-bar">
+                    <div 
+                      class="health-fill" 
+                      [style.width.%]="(player.stats.health / player.stats.maxHealth) * 100">
+                    </div>
+                  </div>
+                  <span class="health-text">{{ player.stats.health }}/{{ player.stats.maxHealth }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div 
+        class="map-viewport"
+        [style.transform]="'scale(' + zoomLevel() + ')'">
+        <div 
+          class="map-grid"
+          [class.show-grid]="showGrid()"
+          [style.grid-template-columns]="'repeat(' + map.width + ', 1fr)'"
+          [style.grid-template-rows]="'repeat(' + map.height + ', 1fr)'">
+          
+          @for (row of map.tiles; track $index; let y = $index) {
+            @for (tile of row; track $index; let x = $index) {
+              <div 
+                class="tile-container"
+                (click)="onTileClick(x, y)">
+                
+                <div 
+                  [class]="getTileClass(tile)"
+                  [title]="'Tile: ' + tile.type + ' (' + x + ', ' + y + ')'">
+                  
+                  @if (tile.type === TileType.TREASURE) {
+                    <span class="tile-icon">💰</span>
+                  } @else if (tile.type === TileType.TRAP) {
+                    <span class="tile-icon">⚠️</span>
+                  } @else if (tile.type === TileType.DOOR) {
+                    <span class="tile-icon">🚪</span>
+                  } @else if (tile.type === TileType.START) {
+                    <span class="tile-icon">🏁</span>
+                  } @else if (tile.type === TileType.EXIT) {
+                    <span class="tile-icon">🚪</span>
+                  } @else if (tile.type === TileType.STAIRS_UP) {
+                    <span class="tile-icon">⬆️</span>
+                  } @else if (tile.type === TileType.STAIRS_DOWN) {
+                    <span class="tile-icon">⬇️</span>
+                  } @else if (tile.type === TileType.WATER) {
+                    <span class="tile-icon">🌊</span>
+                  } @else if (tile.type === TileType.LAVA) {
+                    <span class="tile-icon">🔥</span>
+                  }
+                </div>
+
+                @if (getPlayerAt(x, y); as player) {
+                  <div class="player-marker">
+                    <div class="player-sprite">{{ player.character.class.charAt(0).toUpperCase() }}</div>
+                    @if (showPlayerNames()) {
+                      <div class="player-name-tag">{{ player.name }}</div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="no-map-message">
+        <h3>No Map Selected</h3>
+        <p>Please select a map from the dropdown above or generate a new map in the Map Generator.</p>
+      </div>
+    }
+  </div>
+</div>

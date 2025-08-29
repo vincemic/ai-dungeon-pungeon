@@ -1,0 +1,286 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Game Dashboard</h1>
+    <p class="dashboard-subtitle">Manage your dungeon campaigns and adventures</p>
+  </div>
+
+  @if (currentSession(); as session) {
+    <!-- Active Session Panel -->
+    <div class="session-panel">
+      <div class="session-header">
+        <div class="session-info">
+          <h2>{{ session.name }}</h2>
+          <div class="session-meta">
+            <span class="session-dm">DM: {{ session.dungeonMaster.name }}</span>
+            <span 
+              class="session-status"
+              [style.background-color]="getGameStateColor(session.gameState)">
+              {{ getGameStateLabel(session.gameState) }}
+            </span>
+            <span class="session-duration">{{ sessionDuration() }}</span>
+          </div>
+        </div>
+        
+        <div class="session-controls">
+          @if (session.gameState === GameState.WAITING_FOR_PLAYERS) {
+            <button 
+              (click)="startGame()" 
+              class="btn btn-success"
+              [disabled]="activePlayers().length === 0">
+              🎮 Start Game
+            </button>
+          } @else if (session.gameState === GameState.IN_PROGRESS) {
+            <button 
+              (click)="pauseGame()" 
+              class="btn btn-warning">
+              ⏸️ Pause Game
+            </button>
+          } @else if (session.gameState === GameState.PAUSED) {
+            <button 
+              (click)="resumeGame()" 
+              class="btn btn-success">
+              ▶️ Resume Game
+            </button>
+          }
+          
+          <button 
+            (click)="saveSession()" 
+            class="btn btn-primary">
+            💾 Save
+          </button>
+          
+          <button 
+            (click)="endGame()" 
+            class="btn btn-danger"
+            [disabled]="session.gameState === GameState.COMPLETED">
+            🛑 End Game
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="quick-stats">
+        <div class="stat-card">
+          <div class="stat-number">{{ totalPlayers() }}</div>
+          <div class="stat-label">Active Players</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ totalMaps() }}</div>
+          <div class="stat-label">Available Maps</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ sessionDuration() }}</div>
+          <div class="stat-label">Session Duration</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ session.players.length }}</div>
+          <div class="stat-label">Total Players</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <h3>Quick Actions</h3>
+      <div class="action-grid">
+        <button 
+          (click)="navigateToMapGenerator()" 
+          class="action-card">
+          <div class="action-icon">🗺️</div>
+          <div class="action-title">Generate Map</div>
+          <div class="action-description">Create new dungeon maps</div>
+        </button>
+        
+        <button 
+          (click)="navigateToGameMap()" 
+          class="action-card">
+          <div class="action-icon">🎯</div>
+          <div class="action-title">Game Map</div>
+          <div class="action-description">View and interact with maps</div>
+        </button>
+        
+        <button 
+          (click)="navigateToPlayerManagement()" 
+          class="action-card">
+          <div class="action-icon">👥</div>
+          <div class="action-title">Manage Players</div>
+          <div class="action-description">Add and manage players</div>
+        </button>
+        
+        <button 
+          (click)="exportSessionData()" 
+          class="action-card">
+          <div class="action-icon">📤</div>
+          <div class="action-title">Export Session</div>
+          <div class="action-description">Download session data</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="recent-activity">
+      <div class="activity-section">
+        <h3>Recent Maps</h3>
+        @if (getRecentMaps().length === 0) {
+          <div class="empty-state">
+            <p>No maps created yet</p>
+            <button 
+              (click)="navigateToMapGenerator()" 
+              class="btn btn-primary btn-sm">
+              Create First Map
+            </button>
+          </div>
+        } @else {
+          <div class="recent-maps">
+            @for (map of getRecentMaps(); track map.id) {
+              <div class="recent-map-card">
+                <h4>{{ map.name }}</h4>
+                <div class="map-info">
+                  <span class="map-size">{{ map.width }}×{{ map.height }}</span>
+                  <span class="map-theme">{{ map.metadata.theme }}</span>
+                  <span class="map-difficulty">{{ map.metadata.difficulty }}</span>
+                </div>
+                <p class="map-description">{{ map.metadata.description }}</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="activity-section">
+        <h3>Active Players</h3>
+        @if (getRecentPlayers().length === 0) {
+          <div class="empty-state">
+            <p>No players in session</p>
+            <button 
+              (click)="navigateToPlayerManagement()" 
+              class="btn btn-primary btn-sm">
+              Add Players
+            </button>
+          </div>
+        } @else {
+          <div class="recent-players">
+            @for (player of getRecentPlayers(); track player.id) {
+              <div class="recent-player-card">
+                <div class="player-avatar">
+                  {{ player.character.class.charAt(0).toUpperCase() }}
+                </div>
+                <div class="player-info">
+                  <h4>{{ player.name }}</h4>
+                  <p>{{ player.character.name }}</p>
+                  <div class="player-stats">
+                    <span class="player-level">Level {{ player.character.level }}</span>
+                    <span class="player-class">{{ player.character.class }}</span>
+                  </div>
+                  <div class="player-health">
+                    <div class="health-bar">
+                      <div 
+                        class="health-fill"
+                        [style.width.%]="(player.stats.health / player.stats.maxHealth) * 100">
+                      </div>
+                    </div>
+                    <span class="health-text">
+                      {{ player.stats.health }}/{{ player.stats.maxHealth }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <!-- No Session State -->
+    <div class="no-session-state">
+      <div class="welcome-card">
+        <h2>Welcome to AI Dungeon Pungeon</h2>
+        <p>Create a new game session to start your adventure!</p>
+        
+        @if (!showCreateSession()) {
+          <button 
+            (click)="toggleCreateSession()" 
+            class="btn btn-primary btn-lg">
+            🎲 Create New Session
+          </button>
+        }
+      </div>
+
+      @if (showCreateSession()) {
+        <div class="create-session-form">
+          <h3>Create New Game Session</h3>
+          <form (ngSubmit)="createNewSession()" #sessionForm="ngForm">
+            <div class="form-group">
+              <label for="sessionName">Session Name *</label>
+              <input
+                type="text"
+                id="sessionName"
+                [(ngModel)]="sessionName"
+                name="sessionName"
+                class="form-control"
+                placeholder="Enter session name (e.g., 'The Dragon's Lair')"
+                required>
+            </div>
+            
+            <div class="form-group">
+              <label for="dungeonMasterName">Dungeon Master Name *</label>
+              <input
+                type="text"
+                id="dungeonMasterName"
+                [(ngModel)]="dungeonMasterName"
+                name="dungeonMasterName"
+                class="form-control"
+                placeholder="Enter your name as DM"
+                required>
+            </div>
+
+            <div class="form-actions">
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="!sessionForm.valid">
+                🎯 Create Session
+              </button>
+              <button 
+                type="button" 
+                (click)="toggleCreateSession()" 
+                class="btn btn-secondary">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+
+      <!-- Features Overview -->
+      <div class="features-overview">
+        <h3>Features</h3>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🗺️</div>
+            <h4>Map Generation</h4>
+            <p>Create detailed dungeon maps with various themes and difficulty levels</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">👥</div>
+            <h4>Player Management</h4>
+            <p>Add and manage players with different character classes and abilities</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">🎮</div>
+            <h4>Interactive Gameplay</h4>
+            <p>Navigate maps, interact with tiles, and manage game sessions</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">🔊</div>
+            <h4>Audio Effects</h4>
+            <p>Immersive sound effects and ambient audio for enhanced gameplay</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
