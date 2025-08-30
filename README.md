@@ -1,37 +1,66 @@
-# 🎲 AI Dungeon Pungeon
+# � AI Dungeon Pungeon ⚔️
 
-A modern web-based dungeon map generator and game management system for tabletop RPG sessions, built with Angular 20.2.1.
+A comprehensive **Dungeons & Dragons** dungeon generator and management system built with **Angular 20**. Create immersive dungeons, manage players, and enhance your D&D campaigns with procedural map generation, interactive gameplay, and atmospheric sound effects.
 
-![Angular](https://img.shields.io/badge/Angular-20.2.1-red)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue)
-![Playwright](https://img.shields.io/badge/Playwright-Testing-green)
-![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-success)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Demo-brightgreen)](https://vincemic.github.io/ai-dungeon-pungeon/)
+[![Angular](https://img.shields.io/badge/Angular-20.2.1-red)](https://angular.io/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7.2-blue)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## 🌟 Features
+## ✨ Features
 
-### 🗺️ Map Generation
-- **Algorithmic Dungeon Creation**: Generate unique dungeon maps with customizable parameters
-- **Multiple Themes**: Classic dungeons, caves, castles, forests, and more
-- **Difficulty Levels**: From easy to nightmare difficulty settings
-- **Save & Export**: Store maps locally and export as JSON files
+### 🗺️ **Procedural Map Generation**
+- **10 Unique Themes**: Classic dungeons, caves, castles, forests, deserts, ice caverns, volcanoes, underwater ruins, space stations, and cyberpunk environments
+- **5 Difficulty Levels**: Easy, Medium, Hard, Expert, and Nightmare
+- **Customizable Parameters**: Adjustable room density, treasure placement, and trap frequency
+- **Seed-based Generation**: Create reproducible maps with custom seeds
+- **Visual Map Preview**: Instant map visualization with estimated play time
+
+### 👥 **Player Management System**
+- **Character Creation**: Support for multiple D&D character classes
+- **Session Tracking**: Manage active players and their progress
+- **Character Stats**: Track health, abilities, and equipment
+- **Party Management**: Organize players into adventuring parties
+
+### 🎮 **Interactive Game Map**
+- **Tile-based Navigation**: Click to move through dungeon tiles
+- **Interactive Elements**: Discover treasures, avoid traps, open doors
+- **Zoom Controls**: Scale maps for detailed exploration
+- **Export Functionality**: Save maps for external use
+
+### 🔊 **Immersive Audio System**
+- **Sound Effect Categories**: Footsteps, doors, treasures, traps, magic, combat, and ambient sounds
+- **Freesound.org Integration**: Browse and download sound effects directly
+- **Web Audio API**: High-quality audio processing with graceful fallbacks
+- **Sound Management**: Organize and activate sound effects by category
+
+### � **Authentic D&D Theming**
+- **Medieval Typography**: Cinzel Decorative and Cinzel fonts for authentic feel
+- **Rich Color Palette**: Gold, deep red, royal purple, forest green, and bronze
+- **Parchment Textures**: Subtle background patterns and medieval styling
+- **Responsive Design**: Optimized for desktop and mobile devices
+
+## 📸 Screenshots
+
+### 🛡️ Game Dashboard
+The central hub for managing your D&D campaigns with session overview and quick access to all features.
+
+![Game Dashboard](screenshots/dashboard.png)
+
+### 🗺️ Map Generator
+Create procedural dungeons with customizable parameters and instant visual feedback.
+
+![Map Generator](screenshots/map-generator.png)
+
+### 🎯 Interactive Game Map
+Navigate through generated dungeons with zoom controls and interactive tile exploration.
+
+![Game Map](screenshots/game-map.png)
 
 ### 👥 Player Management
-- **Character Creation**: Multiple character classes with unique abilities
-- **Statistics Tracking**: Health, mana, experience, and gold management
-- **Real-time Updates**: Live player position and stat tracking
-- **Inventory System**: Item management with various item types
+Organize and track your adventuring party with detailed character management.
 
-### 🎮 Interactive Gameplay
-- **Tile-based Movement**: Click-to-move player navigation
-- **Interactive Elements**: Doors, traps, treasures, and special tiles
-- **Visual Feedback**: Smooth animations and state indicators
-- **Audio Effects**: Immersive sound effects for enhanced gameplay
-
-### 🎯 Session Management
-- **Game Sessions**: Create and manage multiplayer RPG sessions
-- **State Tracking**: Game progress and session duration monitoring
-- **Auto-save**: Automatic session persistence to local storage
-- **Export/Import**: Share session data between devices
+![Player Management](screenshots/players.png)
 
 ## 🚀 Quick Start
 
