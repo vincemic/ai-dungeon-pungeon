@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Sound Generator for D&D App</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #2c1a0f; color: #f4e4bc; }
+        .sound-gen { margin: 20px 0; padding: 15px; background: #3c2414; border: 2px solid #cd7f32; border-radius: 8px; }
+        button { padding: 10px 20px; margin: 5px; background: #4b0082; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #6a0dad; }
+        .download-btn { background: #228b22; }
+        .download-btn:hover { background: #32cd32; }
+    </style>
+</head>
+<body>
+    <h1>🎵 D&D Sound Effect Generator</h1>
+    <p>Generate simple sound effects for your D&D app. These are basic audio tones - replace with real sounds when possible.</p>
+    
+    <div class="sound-gen">
+        <h3>Footstep Sound</h3>
+        <button onclick="playFootstep()">▶️ Play</button>
+        <button class="download-btn" onclick="downloadSound('footstep')">💾 Download</button>
+        <p>Quick drum-like thud sound</p>
+    </div>
+
+    <div class="sound-gen">
+        <h3>Door Open Sound</h3>
+        <button onclick="playDoorOpen()">▶️ Play</button>
+        <button class="download-btn" onclick="downloadSound('door-open')">💾 Download</button>
+        <p>Rising creak sound</p>
+    </div>
+
+    <div class="sound-gen">
+        <h3>Door Close Sound</h3>
+        <button onclick="playDoorClose()">▶️ Play</button>
+        <button class="download-btn" onclick="downloadSound('door-close')">💾 Download</button>
+        <p>Falling thud sound</p>
+    </div>
+
+    <div class="sound-gen">
+        <h3>Treasure Sound</h3>
+        <button onclick="playTreasure()">▶️ Play</button>
+        <button class="download-btn" onclick="downloadSound('treasure')">💾 Download</button>
+        <p>Bright chiming sounds</p>
+    </div>
+
+    <div class="sound-gen">
+        <h3>Trap Sound</h3>
+        <button onclick="playTrap()">▶️ Play</button>
+        <button class="download-btn" onclick="downloadSound('trap')">💾 Download</button>
+        <p>Sharp mechanical click</p>
+    </div>
+
+    <div class="sound-gen">
+        <h3>Magic Sound</h3>
+        <button onclick="playMagic()">▶️ Play</button>
+        <button class="download-btn" onclick="downloadSound('magic')">💾 Download</button>
+        <p>Mystical whoosh with sparkles</p>
+    </div>
+
+    <div class="sound-gen">
+        <h3>Combat Sound</h3>
+        <button onclick="playCombat()">▶️ Play</button>
+        <button class="download-btn" onclick="downloadSound('combat')">💾 Download</button>
+        <p>Metal clang sound</p>
+    </div>
+
+    <div class="sound-gen">
+        <h3>Ambient Dungeon Sound</h3>
+        <button onclick="playAmbient()">▶️ Play</button>
+        <button class="download-btn" onclick="downloadSound('ambient-dungeon')">💾 Download</button>
+        <p>Low atmospheric hum</p>
+    </div>
+
+    <script>
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const sounds = {};
+
+        // Generate different sound effects using Web Audio API
+        function createTone(frequency, duration, type = 'sine', volume = 0.3) {
+            const gainNode = audioContext.createGain();
+            const oscillator = audioContext.createOscillator();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = type;
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        function playFootstep() {
+            // Quick drum-like thud
+            createTone(80, 0.15, 'triangle', 0.5);
+            setTimeout(() => createTone(60, 0.1, 'triangle', 0.3), 50);
+        }
+
+        function playDoorOpen() {
+            // Rising creak
+            const startTime = audioContext.currentTime;
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.frequency.setValueAtTime(150, startTime);
+            osc.frequency.linearRampToValueAtTime(300, startTime + 1.5);
+            osc.type = 'sawtooth';
+            
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(0.2, startTime + 0.1);
+            gain.gain.linearRampToValueAtTime(0, startTime + 1.5);
+            
+            osc.start(startTime);
+            osc.stop(startTime + 1.5);
+        }
+
+        function playDoorClose() {
+            // Falling thud
+            createTone(120, 0.3, 'triangle', 0.4);
+            setTimeout(() => createTone(80, 0.5, 'triangle', 0.6), 100);
+        }
+
+        function playTreasure() {
+            // Bright chiming
+            createTone(523, 0.3, 'sine', 0.4); // C5
+            setTimeout(() => createTone(659, 0.3, 'sine', 0.4), 100); // E5
+            setTimeout(() => createTone(784, 0.5, 'sine', 0.4), 200); // G5
+        }
+
+        function playTrap() {
+            // Sharp click
+            createTone(800, 0.05, 'square', 0.6);
+            setTimeout(() => createTone(400, 0.1, 'triangle', 0.4), 50);
+        }
+
+        function playMagic() {
+            // Mystical whoosh
+            for(let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createTone(200 + Math.random() * 400, 0.2, 'sine', 0.2);
+                }, i * 100);
+            }
+        }
+
+        function playCombat() {
+            // Metal clang
+            createTone(300, 0.1, 'square', 0.5);
+            setTimeout(() => createTone(250, 0.15, 'triangle', 0.4), 50);
+            setTimeout(() => createTone(200, 0.2, 'sawtooth', 0.3), 100);
+        }
+
+        function playAmbient() {
+            // Low atmospheric hum
+            createTone(55, 3, 'triangle', 0.1); // Low A
+            setTimeout(() => createTone(65, 3, 'sine', 0.08), 500); // Low C
+        }
+
+        function downloadSound(soundName) {
+            alert(`To download ${soundName}.mp3:\n\n1. Use browser dev tools to record audio\n2. Or use the download guide for real sounds\n3. Visit freesound.org for professional audio\n\nThese generated sounds are just placeholders!`);
+        }
+    </script>
+</body>
+</html>

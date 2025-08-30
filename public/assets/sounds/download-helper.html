@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Sound Effects Download Helper</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c1a0f 0%, #1a0f0a 100%);
+            color: #f4e4bc;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(60, 36, 20, 0.9);
+            border: 3px solid #cd7f32;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+        }
+        h1 {
+            text-align: center;
+            color: #d4af37;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 2rem;
+        }
+        .sound-item {
+            background: rgba(244, 228, 188, 0.1);
+            border: 2px solid #cd7f32;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+        }
+        .sound-item:hover {
+            border-color: #d4af37;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+        .sound-title {
+            color: #d4af37;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .sound-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .link-btn {
+            background: linear-gradient(145deg, #4b0082, #6a0dad);
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .link-btn:hover {
+            background: linear-gradient(145deg, #6a0dad, #8a2be2);
+            border-color: #d4af37;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(106, 13, 173, 0.4);
+        }
+        .freesound { background: linear-gradient(145deg, #228b22, #32cd32); }
+        .freesound:hover { background: linear-gradient(145deg, #32cd32, #00ff00); }
+        
+        .zapsplat { background: linear-gradient(145deg, #ff6347, #ff7f50); }
+        .zapsplat:hover { background: linear-gradient(145deg, #ff7f50, #ffa500); }
+        
+        .tabletopaudio { background: linear-gradient(145deg, #8b0000, #dc143c); }
+        .tabletopaudio:hover { background: linear-gradient(145deg, #dc143c, #ff1493); }
+        
+        .bbc { background: linear-gradient(145deg, #191970, #4169e1); }
+        .bbc:hover { background: linear-gradient(145deg, #4169e1, #6495ed); }
+        
+        .instructions {
+            background: rgba(244, 228, 188, 0.1);
+            border-left: 4px solid #d4af37;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .status-indicator {
+            float: right;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .needed { background: #dc143c; color: white; }
+        .optional { background: #ffa500; color: white; }
+        .checklist {
+            background: rgba(60, 36, 20, 0.7);
+            border: 2px solid #cd7f32;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .checklist h3 {
+            color: #d4af37;
+            margin-top: 0;
+        }
+        .checkbox-item {
+            margin: 0.8rem 0;
+            padding: 0.5rem;
+            border-radius: 6px;
+            background: rgba(244, 228, 188, 0.05);
+        }
+        input[type="checkbox"] {
+            margin-right: 0.8rem;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 D&D Sound Effects Download Helper</h1>
+        
+        <div class="instructions">
+            <h3>📋 Quick Instructions:</h3>
+            <ol>
+                <li>Click the download links below to visit each sound library</li>
+                <li>Search for the recommended terms</li>
+                <li>Download the MP3 files</li>
+                <li>Save them to <code>public/assets/sounds/</code> folder</li>
+                <li>Rename files to match the exact names shown</li>
+                <li>Check off completed items below</li>
+            </ol>
+        </div>
+
+        <div class="sound-item">
+            <div class="sound-title">
+                1. footstep.mp3 
+                <span class="status-indicator needed">REQUIRED</span>
+            </div>
+            <p><strong>Search for:</strong> "footstep stone", "boot on stone", "walking concrete"</p>
+            <p><strong>Duration:</strong> 0.5-1 second</p>
+            <div class="sound-links">
+                <a href="https://freesound.org/search/?q=footstep+stone" target="_blank" class="link-btn freesound">🎧 Freesound</a>
+                <a href="https://zapsplat.com/sound-effect-category/footsteps/" target="_blank" class="link-btn zapsplat">⚡ Zapsplat</a>
+            </div>
+        </div>
+
+        <div class="sound-item">
+            <div class="sound-title">
+                2. door-open.mp3 
+                <span class="status-indicator needed">REQUIRED</span>
+            </div>
+            <p><strong>Search for:</strong> "wooden door open", "creaky door", "medieval door"</p>
+            <p><strong>Duration:</strong> 1-2 seconds</p>
+            <div class="sound-links">
+                <a href="https://freesound.org/search/?q=door+open+wood" target="_blank" class="link-btn freesound">🎧 Freesound</a>
+                <a href="https://zapsplat.com/sound-effect-category/doors/" target="_blank" class="link-btn zapsplat">⚡ Zapsplat</a>
+            </div>
+        </div>
+
+        <div class="sound-item">
+            <div class="sound-title">
+                3. door-close.mp3 
+                <span class="status-indicator needed">REQUIRED</span>
+            </div>
+            <p><strong>Search for:</strong> "wooden door close", "door slam", "medieval door close"</p>
+            <p><strong>Duration:</strong> 1-2 seconds</p>
+            <div class="sound-links">
+                <a href="https://freesound.org/search/?q=door+close+wood" target="_blank" class="link-btn freesound">🎧 Freesound</a>
+                <a href="https://zapsplat.com/sound-effect-category/doors/" target="_blank" class="link-btn zapsplat">⚡ Zapsplat</a>
+            </div>
+        </div>
+
+        <div class="sound-item">
+            <div class="sound-title">
+                4. treasure.mp3 
+                <span class="status-indicator needed">REQUIRED</span>
+            </div>
+            <p><strong>Search for:</strong> "coins", "treasure chest", "gold coins", "loot"</p>
+            <p><strong>Duration:</strong> 1-3 seconds</p>
+            <div class="sound-links">
+                <a href="https://freesound.org/search/?q=coins+treasure" target="_blank" class="link-btn freesound">🎧 Freesound</a>
+                <a href="https://zapsplat.com/sound-effect-category/money-and-coins/" target="_blank" class="link-btn zapsplat">⚡ Zapsplat</a>
+            </div>
+        </div>
+
+        <div class="sound-item">
+            <div class="sound-title">
+                5. trap.mp3 
+                <span class="status-indicator needed">REQUIRED</span>
+            </div>
+            <p><strong>Search for:</strong> "mechanical trap", "click snap", "spring trap", "mouse trap"</p>
+            <p><strong>Duration:</strong> 0.5-2 seconds</p>
+            <div class="sound-links">
+                <a href="https://freesound.org/search/?q=trap+spring" target="_blank" class="link-btn freesound">🎧 Freesound</a>
+                <a href="https://zapsplat.com/sound-effect-category/mechanical/" target="_blank" class="link-btn zapsplat">⚡ Zapsplat</a>
+            </div>
+        </div>
+
+        <div class="sound-item">
+            <div class="sound-title">
+                6. magic.mp3 
+                <span class="status-indicator needed">REQUIRED</span>
+            </div>
+            <p><strong>Search for:</strong> "magic spell", "magical chime", "spell cast", "magic whoosh"</p>
+            <p><strong>Duration:</strong> 1-3 seconds</p>
+            <div class="sound-links">
+                <a href="https://freesound.org/search/?q=magic+spell" target="_blank" class="link-btn freesound">🎧 Freesound</a>
+                <a href="https://zapsplat.com/sound-effect-category/magic-and-fantasy/" target="_blank" class="link-btn zapsplat">⚡ Zapsplat</a>
+            </div>
+        </div>
+
+        <div class="sound-item">
+            <div class="sound-title">
+                7. combat.mp3 
+                <span class="status-indicator needed">REQUIRED</span>
+            </div>
+            <p><strong>Search for:</strong> "sword clash", "metal sword", "weapons fighting", "blade clash"</p>
+            <p><strong>Duration:</strong> 1-2 seconds</p>
+            <div class="sound-links">
+                <a href="https://freesound.org/search/?q=sword+metal" target="_blank" class="link-btn freesound">🎧 Freesound</a>
+                <a href="https://zapsplat.com/sound-effect-category/weapons/" target="_blank" class="link-btn zapsplat">⚡ Zapsplat</a>
+            </div>
+        </div>
+
+        <div class="sound-item">
+            <div class="sound-title">
+                8. ambient-dungeon.mp3 
+                <span class="status-indicator optional">AMBIENT</span>
+            </div>
+            <p><strong>Search for:</strong> "dungeon ambience", "cave atmosphere", "dark ambient", "underground"</p>
+            <p><strong>Duration:</strong> 30-60 seconds (will loop)</p>
+            <div class="sound-links">
+                <a href="https://freesound.org/search/?q=cave+ambient" target="_blank" class="link-btn freesound">🎧 Freesound</a>
+                <a href="https://tabletopaudio.com/" target="_blank" class="link-btn tabletopaudio">🏰 Tabletop Audio</a>
+                <a href="https://sound-effects.bbcrewind.co.uk/search?q=cave" target="_blank" class="link-btn bbc">📺 BBC Sounds</a>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <h3>📋 Download Checklist</h3>
+            <div class="checkbox-item">
+                <input type="checkbox" id="footstep"> 
+                <label for="footstep">Downloaded and renamed footstep.mp3</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="door-open"> 
+                <label for="door-open">Downloaded and renamed door-open.mp3</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="door-close"> 
+                <label for="door-close">Downloaded and renamed door-close.mp3</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="treasure"> 
+                <label for="treasure">Downloaded and renamed treasure.mp3</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="trap"> 
+                <label for="trap">Downloaded and renamed trap.mp3</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="magic"> 
+                <label for="magic">Downloaded and renamed magic.mp3</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="combat"> 
+                <label for="combat">Downloaded and renamed combat.mp3</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ambient"> 
+                <label for="ambient">Downloaded and renamed ambient-dungeon.mp3</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="placed"> 
+                <label for="placed">All files placed in public/assets/sounds/ folder</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="tested"> 
+                <label for="tested">Tested sounds in the app - all working!</label>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>💡 Pro Tips:</h3>
+            <ul>
+                <li><strong>Account Setup:</strong> Create accounts on Freesound and Zapsplat first</li>
+                <li><strong>Quality:</strong> Download 44.1kHz MP3 files when possible</li>
+                <li><strong>Size:</strong> Keep files under 1MB each for faster loading</li>
+                <li><strong>Preview:</strong> Always listen before downloading</li>
+                <li><strong>Licensing:</strong> Check Creative Commons requirements</li>
+                <li><strong>Backup:</strong> Save original downloads in case you need them</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Save checkbox states to localStorage
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        
+        // Load saved states
+        checkboxes.forEach(checkbox => {
+            const saved = localStorage.getItem(`dnd-sound-${checkbox.id}`);
+            if (saved === 'true') {
+                checkbox.checked = true;
+            }
+        });
+        
+        // Save states on change
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                localStorage.setItem(`dnd-sound-${this.id}`, this.checked);
+            });
+        });
+    </script>
+</body>
+</html>

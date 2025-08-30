@@ -31,24 +31,15 @@
 }
 
 .dashboard-header h1 {
-  font-family: var(--font-display);
-  font-size: 4rem;
-  color: var(--deep-red);
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  color: var(--primary-gold);
   text-shadow: 
-    2px 2px 4px rgba(0, 0, 0, 0.6),
-    0 0 15px rgba(139, 0, 0, 0.3);
+    2px 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(212, 175, 55, 0.4);
   margin: 0 0 1rem 0;
-  letter-spacing: 6px;
+  letter-spacing: 3px;
   position: relative;
-  background: linear-gradient(45deg, 
-    var(--deep-red) 0%, 
-    var(--primary-gold) 30%, 
-    var(--deep-red) 60%, 
-    var(--royal-purple) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
   animation: title-glow 4s ease-in-out infinite alternate;
 }
 
@@ -954,6 +945,7 @@
   
   .dashboard-header h1 {
     font-size: 2rem;
+    letter-spacing: 2px;
   }
   
   .session-header {

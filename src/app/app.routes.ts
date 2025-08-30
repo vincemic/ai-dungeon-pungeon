@@ -23,6 +23,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/player-management/player-management').then(m => m.PlayerManagement)
   },
   {
+    path: 'sound-browser',
+    loadComponent: () => import('./features/sound-browser/sound-browser').then(m => m.SoundBrowserComponent)
+  },
+  {
     path: '**',
     redirectTo: '/dashboard'
   }
